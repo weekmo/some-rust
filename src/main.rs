@@ -8,6 +8,12 @@ use regex::Regex;
 fn main() {
     secon_lesson();
     calc();
+    ownership();
+    use_rectangle();
+
+
+}
+fn ownership(){
     let s = String::from("Hello world");
     let word = first_word(&s);
     println!("{word}");
@@ -16,7 +22,6 @@ fn main() {
     let t = first_word("Hi Hello You");
     println!("{t}");
 }
-
 /*
 fn first_lesson(){
     println!("Guess the number!");
@@ -115,5 +120,80 @@ fn first_word(s: &str) -> &str {
     }
     &s[..]
 }
-// https://doc.rust-lang.org/book/ch04-03-slices.html
+
+struct User {
+    active: bool,
+    username: String,
+    email: String,
+    sign_in_count: u64,
+}
+fn build_user(email: String, username: String) -> User {
+    User {
+        active: true,
+        username,
+        email,
+        sign_in_count: 1,
+    }
+}
+
+fn using_user(){
+    let mut user1 = User {
+        active: true,
+        username: String::from("someusername123"),
+        email: String::from("someone@example.com"),
+        sign_in_count: 1,
+    };
+    user1.email = String::from("someone123@example.com");
+    let user2 = build_user(String::from("value"), String::from("value"));
+    let user3 = User {
+        active: user2.active,
+        username: user2.username,
+        email: String::from("value"),
+        sign_in_count: user2.sign_in_count,
+    };
+
+    let user4 = User {
+        email: String::from("value"),
+        ..user1
+    };
+}
+
+#[derive(Debug)]
+struct Rectangle {
+    width: u32,
+    hight: u32,
+}
+
+impl Rectangle {
+    fn area(&self) -> u32{
+        self.width * self.hight
+    }
+
+    fn square(size: u32) -> Self{
+        Self {
+            width: size,
+            hight: size,
+        }
+    }
+}
+
+fn use_rectangle(){
+    let scale = 2;
+    let rect1 = Rectangle {
+        width: dbg!(30 * scale) ,
+        hight: 50,
+    };
+
+    println!(
+        "The area of the rectangle is {} aquare pixels.",
+        rect1.area()
+    );
+
+    //println!("Rectangle {:#?}", rect1);
+    dbg!(&rect1);
+
+    let sqr = Rectangle::square(4);
+    println!("Square {:#?}", sqr);
+}
+// https://doc.rust-lang.org/book/ch06-00-enums.html
 // https://doc.rust-lang.org/cargo/guide/project-layout.html
